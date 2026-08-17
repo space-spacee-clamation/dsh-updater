@@ -1,0 +1,28 @@
+# dsh-updater bundle: mounts the updater core service (any profile) plus the
+# web-only /dsh-updater route carrier. The web row waits on both the core
+# service and webServer, so headless profiles keep the core active while the
+# HTTP half simply never mounts there.
+#
+# The package is dual-face: the root row also carries the browser half through
+# the package's `dsh.client` declaration and `./client` export, which registers
+# the "Harness 更新" tab inside Settings -> Plugins. No extra client row.
+#
+# targetDir is intentionally empty: the plugin auto-discovers the local
+# deepseek-harness checkout from process.cwd()/its ancestors (start.py runs dsh
+# with cwd = vendor/deepseek-harness) or from <cwd>/vendor/deepseek-harness.
+# Set it explicitly (or $DSH_UPDATER_TARGET_DIR) only for non-standard layouts.
+- insert:
+    - id: dsh-updater
+      name: '@dsh-ext/dsh-updater'
+      config:
+        repoUrl: https://github.com/deepseek-ai/deepseek-harness.git
+        branch: ''
+        targetDir: ''
+        checkOnLoad: true
+        checkIntervalMs: 600000
+        force: false
+        apiPrefix: /dsh-updater
+
+    - id: dsh-updater-web
+      name: '@dsh-ext/dsh-updater/web'
+      inject: [dshUpdater, webServer]
