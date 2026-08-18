@@ -2,8 +2,8 @@
 
 `@dsh-ext/dsh-updater` 是 DeepSeek Harness 的更新检查 bundle 插件：插件
 **生效时（Cordis `apply` 运行）自动检查** `deepseek-harness` 远端仓库是否
-有新提交，在 Web 的 **Settings → Plugins → Harness 更新** 里提供一个
-**一键更新**按钮，点击后自动克隆/拉取新内容，并**提醒用户重启**。
+有新提交，在 Web 的 **设置 → 通用设置 → DeepSeek Harness 更新** 行里提供
+一个 **一键更新**按钮，点击后自动克隆/拉取新内容，并**提醒用户重启**。
 
 > 理论上可行吗？可行。关键是边界：插件运行在 harness 进程内部，不能热替换
 > 正在运行中的自己。所以本插件只把新内容写入本地 checkout（clone 或
@@ -22,8 +22,8 @@ plugin apply (effect)
         │     git -C <target> rev-parse HEAD       → 本地 commit
         └─ 快照 → GET /dsh-updater/status
 
-浏览器 Plugins Tab（15 秒轮询状态）
-        ├─ 显示 本地/远端 commit、分支、目录、上次检查时间
+浏览器通用设置行（15 秒轮询状态）
+        ├─ 显示 状态/远端短 commit；详情可展开查看
         ├─ 有新提交时启用 “一键更新”
         │     POST /dsh-updater/update
         │       ├─ 本地目录不存在 → git clone --depth=1 --branch <b>
@@ -59,9 +59,9 @@ cd vendor/deepseek-harness
 pnpm dsh plugin --profile web add github:space-spacee-clamation/dsh-updater
 ```
 
-安装后打开 Web UI：**设置 → Plugins → Harness 更新**。安装本身走
-dsh-bundle 热挂载，无需重启；只有当它检测到 harness 更新并执行更新后，才
-需要重启 DSH。
+安装后打开 Web UI：**设置 → 通用设置 → DeepSeek Harness 更新**。安装本身
+走 dsh-bundle 热挂载，无需重启；只有当它检测到 harness 更新并执行更新后，
+才需要重启 DSH。
 
 ## 配置
 
@@ -106,7 +106,7 @@ pnpm run check
 | --- | --- |
 | `lib/index.js` / `lib/index.d.ts` | Node 侧：`DshUpdaterService`、Config、git 工具导出 |
 | `lib/web.js` / `lib/web.d.ts` | Web 路由：`/dsh-updater/*` |
-| `lib/client.js` | 浏览器侧：Settings → Plugins 的 Harness 更新 Tab |
+| `lib/client.js` | 浏览器侧：通用设置里的 DeepSeek Harness 更新行 |
 | `cordis.patch.yml` | bundle patch：注入 root + web 两个 loader 行 |
 
 ## Model Experience
@@ -116,7 +116,7 @@ pnpm run check
 #### What the model sees
 
 None, as this plugin contributes no model-visible context; it performs
-out-of-band git checks and presents a user-facing settings tab only.
+out-of-band git checks and presents a General-settings preference row only.
 
 #### Token effect
 

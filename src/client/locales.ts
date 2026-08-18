@@ -1,12 +1,12 @@
 /**
- * Locale dictionaries owned by the dsh-updater browser tab.
+ * Locale dictionaries owned by the dsh-updater General-settings row.
  * Product copy is Chinese; `en` is a best-effort mirror.
  */
 
 export const zh = {
-  tab: 'Harness 更新',
   title: 'DeepSeek Harness 更新',
-  desc: '插件生效时自动检查 deepseek-harness 远端仓库；有新提交时点击更新即可克隆/拉取新内容，随后请重启 DSH。',
+  desc: '自动检查 deepseek-harness 远端仓库；有新提交时点击更新即可克隆/拉取新内容，随后请重启 DSH。',
+  details: '查看详情',
   repo: '远端仓库',
   branch: '跟踪分支',
   target: '本地目录',
@@ -34,9 +34,9 @@ export const zh = {
 export type LocaleKey = keyof typeof zh
 
 export const en: Record<LocaleKey, string> = {
-  tab: 'Harness update',
   title: 'DeepSeek Harness update',
   desc: 'The upstream deepseek-harness repository is checked automatically while the plugin is active. When a new commit exists, click update to clone/fetch the new content and then restart DSH.',
+  details: 'Details',
   repo: 'Remote repository',
   branch: 'Tracking branch',
   target: 'Local directory',
