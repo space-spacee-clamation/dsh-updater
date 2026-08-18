@@ -137,6 +137,7 @@ reuse.
   `pnpm install` 和 `pnpm run build`。
 - **Windows 文件占用** — 当前进程可能占用部分 checkout 文件，`git checkout`
   偶发失败会以错误状态展示在 UI 中；关闭 DSH 后重试即可。
-- **工作区脏检查** — 默认拒绝覆盖本地改动；`force: true` 会丢弃这些改动。
+- **工作区脏检查** — 默认拒绝覆盖本地**已跟踪**改动（未跟踪文件通常不影响
+  checkout，冲突时 git 会报错并保持原样）；`force: true` 会丢弃已跟踪改动。
 - **网络依赖** — 检查与更新都依赖 `git` 命令和 GitHub 可达性；离线时状态
   为 error，不会破坏本地 checkout。

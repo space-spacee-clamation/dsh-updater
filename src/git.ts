@@ -117,9 +117,11 @@ export async function remoteHead(
   return objectId
 }
 
-/** True when the worktree has tracked or untracked changes. */
+/** True when the worktree has tracked changes. Untracked files are ignored:
+ * they normally do not block `git checkout --detach FETCH_HEAD`, and a real
+ * path collision still fails the checkout loudly. */
 export async function isDirty(dir: string, run: GitRunner = defaultGitRunner): Promise<boolean> {
-  return (await run(['status', '--porcelain'], dir)).trim() !== ''
+  return (await run(['status', '--porcelain', '--untracked-files=no'], dir)).trim() !== ''
 }
 
 /** The origin URL of a checkout, normalized for comparison. */
@@ -236,7 +238,7 @@ export async function fetchExisting(
     throw new Error(`target directory is not a git repository: ${targetDir}`)
   }
   if (!force && await isDirty(targetDir, run)) {
-    throw new Error(`target checkout has uncommitted changes: ${targetDir}; commit/stash them or enable force`)
+    throw new Error(`target checkout has uncommitted tracked changes: ${targetDir}; commit/stash them or enable force`)
   }
   await run(['fetch', '--quiet', '--no-tags', '--depth', '1', url, branch], targetDir)
   await run(['checkout', '--quiet', '--detach', '--force', 'FETCH_HEAD'], targetDir)

@@ -20,7 +20,6 @@ import {
   cloneRemote,
   defaultGitRunner,
   fetchExisting,
-  isDirty,
   isGitRepo,
   localHead,
   remoteHead,
@@ -212,9 +211,6 @@ export class DshUpdaterService extends Service {
         if (!existing) {
           await cloneRemote(this.repoUrl, branch, targetDir, this.runGit)
         } else {
-          if (!this.force && await isDirty(targetDir, this.runGit)) {
-            throw new Error(`target checkout has uncommitted changes: ${targetDir}; commit/stash them or enable force`)
-          }
           await fetchExisting(this.repoUrl, branch, targetDir, this.force, this.runGit)
         }
 

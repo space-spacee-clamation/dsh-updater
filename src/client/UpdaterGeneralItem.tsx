@@ -205,7 +205,9 @@ export function UpdaterGeneralItem({ t }: UpdaterGeneralItemProps): ReactElement
         <div style={styles.banner}>{t('restartBanner')}</div>
       )}
 
-      {error !== '' && <pre style={styles.error}>{error}</pre>}
+      {(error !== '' || (snapshot?.error ?? '') !== '') && (
+        <pre style={styles.error}>{error !== '' ? error : snapshot?.error}</pre>
+      )}
       {message !== '' && <p style={styles.desc}>{message}</p>}
 
       {snapshot !== null && (
